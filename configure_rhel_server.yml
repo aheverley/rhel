@@ -1,0 +1,5 @@
+---
+- name: Configure RHEL Instance
+  hosts: all
+  roles:
+    - configure_rhel
