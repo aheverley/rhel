@@ -4,5 +4,5 @@
   roles:
     - configure_rhel
   collections:
-    - community.general.redhat_subscription
+    - community.general
 
