@@ -11,11 +11,11 @@
 
 - name: restart machine
   ansible.builtin.command: shutdown -r now "Ansible updates triggered"
-    async: 0
-    poll: 0
-    ignore_errors: True
-    when:
-      reboot is defined
+  async: 0
+  poll: 0
+  ignore_errors: True
+  when:
+    reboot is defined
 
 - name: Waiting for server to come back up
   local_action: wait_for host= "{{ hostname }}" port=22 state=started
