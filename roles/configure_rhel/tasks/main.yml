@@ -4,7 +4,7 @@
     name: "{{ hostname }}"
 
 - name: Register as user with password and auto-subscribe to available content
-  community.general.redhat_subscription:
+  redhat_subscription:
     state: present
     username: "{{ rh_username }}"
     password: "{{ rh_password }}"
