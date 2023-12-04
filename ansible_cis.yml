@@ -1,0 +1,4 @@
+- name: Configure CIS
+  hosts: all
+  roles:
+    - ansible-role-rhel8-cis
