@@ -1,18 +1,26 @@
 ---
-- name: Pull login information from tlog session recordings
+- name: Extract and prepare login data for Grafana
   hosts: all
-  become: yes
+  gather_facts: false
   tasks:
-    - name: Query journal for tlog login events
-      ansible.builtin.command:
-        cmd: journalctl -o json_pretty _COMM=tlog-rec-session
-      register: tlog_entries
-      failed_when: tlog_entries.rc != 0 and tlog_entries.rc != 1
+    - name: Ensure log directory exists on control node
+      delegate_to: localhost
+      ansible.builtin.file:
+        path: "./grafana_logs"
+        state: directory
+        mode: '0755'
+      run_once: true
 
-    - name: Display login information
-      ansible.builtin.debug:
-        msg: "{{ item }}"
-      loop: "{{ tlog_entries.stdout_lines }}"
-      loop_control:
-        label: "{{ item | from_json | json_query('user') }}"
-      when: tlog_entries.stdout_lines is defined and item | from_json | json_query('user') is defined
+    - name: Fetch and filter journal data
+      ansible.builtin.shell:
+        cmd: |
+          journalctl -o json --output-fields=MESSAGE,TLOG_REC -S "today" _COMM=tlog-rec-session
+      register: tlog_entries
+
+    - name: Process and format log data
+      ansible.builtin.template:
+        src: template_logins.j2
+        dest: "./grafana_logs/{{ inventory_hostname }}-logins.json"
+      vars:
+        log_entries: "{{ tlog_entries.stdout | from_json_list | default([]) }}"
+      delegate_to: localhost
