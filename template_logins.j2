@@ -2,7 +2,7 @@
 {% for entry in log_entries %}
   {% if entry.MESSAGE %}
   {
-    "timestamp": "{{ entry.__REALTIME_TIMESTAMP | int / 1000000 | utc=true('%Y-%m-%dT%H:%M:%SZ') }}",
+    "timestamp": "{{ entry.__REALTIME_TIMESTAMP | int / 1000000 | datetimeformat('%Y-%m-%dT%H:%M:%SZ') }}",
     "user": "{{ entry.TLOG_USER }}",
     "host": "{{ inventory_hostname }}"
   }{% if not loop.last %},{% endif %}
