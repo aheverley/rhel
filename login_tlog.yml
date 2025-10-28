@@ -17,6 +17,10 @@
           journalctl -o json --output-fields=MESSAGE,TLOG_REC -S "today" _COMM=tlog-rec-session
       register: tlog_entries
 
+    - name: Debugging a variable
+      debug:
+       var: tlog_entries
+
     - name: Process and format log data
       ansible.builtin.template:
         src: template_logins.j2
