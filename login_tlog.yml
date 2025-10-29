@@ -15,7 +15,7 @@
       ansible.builtin.shell:
         cmd: |
           journalctl -o json --output-fields=MESSAGE,TLOG_REC -S "today" _COMM=tlog-rec-session
-      register: tlog_entries
+      register: tlog_result
 
     - name: Gather start time
       ansible.builtin.set_fact:
