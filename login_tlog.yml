@@ -21,6 +21,14 @@
       debug:
        var: tlog_entries
 
+    - name: set var
+      set_fact:
+        date_var: "{{'%Y-%m-%dT%H:%M:%SZ' | format(tlog_entries['start']) }}"
+
+    - name: Debugging a date_var
+      debug:
+       var: date_var
+
     - name: Process and format log data
       ansible.builtin.template:
         src: template_logins.j2
