@@ -17,17 +17,25 @@
           journalctl -o json --output-fields=MESSAGE,TLOG_REC -S "today" _COMM=tlog-rec-session
       register: tlog_entries
 
-    - name: Debugging a variable
-      debug:
-       var: tlog_entries
+    - name: Gather start time
+      ansible.builtin.set_fact:
+        tlog_start_time: "{{ tlog_result.stdout | from_json.tlog_entries.start }}"
 
-    - name: set var
-      set_fact:
-        date_var: "{{ tlog_entries[start] | strftime('%Y-%m-%dT%H:%M:%SZ') }}"
+    - name: Use the 'start' variable in a debug message
+      ansible.builtin.debug:
+        msg: "The tlog recording started at: {{ tlog_start_time }}"
+        
+#    - name: Debugging a variable
+#      debug:
+#       var: tlog_entries
 
-    - name: Debugging a date_var
-      debug:
-       var: date_var
+ #   - name: set var
+ #     set_fact:
+ #       date_var: "{{ tlog_entries[start] | strftime('%Y-%m-%dT%H:%M:%SZ') }}"
+
+ #   - name: Debugging a date_var
+ #     debug:
+ #      var: date_var
 
     - name: Process and format log data
       ansible.builtin.template:
