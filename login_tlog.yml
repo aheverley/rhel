@@ -23,7 +23,7 @@
 
     - name: set var
       set_fact:
-        date_var: "{{'%Y-%m-%dT%H:%M:%SZ' | format(tlog_entries['start']) }}"
+        date_var: "{{ tlog_entries[start] | strftime('%Y-%m-%dT%H:%M:%SZ') }}"
 
     - name: Debugging a date_var
       debug:
