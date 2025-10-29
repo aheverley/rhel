@@ -19,7 +19,7 @@
 
     - name: Gather start time
       ansible.builtin.set_fact: 
-        tlog_start_time: "{{ tlog_result.stdout | from_json.tlog_entries.start }}"
+        tlog_start_time: "{{ tlog_result.stdout }}" #| from_json.tlog_entries.start }}"
 
     - name: Use the 'start' variable in a debug message
       ansible.builtin.debug:
